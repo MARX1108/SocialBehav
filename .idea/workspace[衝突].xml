@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9e2822dc-d060-4ee9-a893-32814f3134ed" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1keVLVTU2EXkNE0XxRTLXJOXzLO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunManager" selected="Python.aggressive_sumscore_decision_tree_classification_75">
+    <configuration name="DA_V" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="coding" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\user\AppData\Local\Programs\Python\Python37\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DA_V.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="aggressive_decision_tree_classification_66_tri" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="coding" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\user\AppData\Local\Programs\Python\Python37\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/aggressive_decision_tree_classification_66_tri.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="aggressive_decision_tree_classification_75_tri" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="coding" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\user\AppData\Local\Programs\Python\Python37\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/aggressive_decision_tree_classification_75_tri.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="aggressive_sumscore_decision_tree_classification" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="coding" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/aggressive_sumscore_decision_tree_classification.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="aggressive_sumscore_decision_tree_classification_66" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="coding" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\user\AppData\Local\Programs\Python\Python37\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/aggressive_sumscore_decision_tree_classification_66.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="aggressive_sumscore_decision_tree_classification_75" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="coding" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\user\AppData\Local\Programs\Python\Python37\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/aggressive_sumscore_decision_tree_classification_75.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="coding" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\user\AppData\Local\Programs\Python\Python37\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.aggressive_sumscore_decision_tree_classification" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9e2822dc-d060-4ee9-a893-32814f3134ed" name="Default Changelist" comment="" />
+      <created>1606060988004</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1606060988004</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="672" y="0" key="#DA_V" timestamp="1606063116482">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="672" y="0" key="#DA_V/0.0.1280.720@0.0.1280.720" timestamp="1606063116482" />
+    <state x="352" y="0" key="#aggressive_decision_tree_classification_66_tri" timestamp="1606408316789">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="352" y="0" key="#aggressive_decision_tree_classification_66_tri/0.0.1280.720@0.0.1280.720" timestamp="1606408316789" />
+    <state x="352" y="0" key="#aggressive_decision_tree_classification_75_tri" timestamp="1606409578979">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="352" y="0" key="#aggressive_decision_tree_classification_75_tri/0.0.1280.720@0.0.1280.720" timestamp="1606409578979" />
+    <state x="352" y="0" key="#aggressive_sumscore_decision_tree_classification" timestamp="1606130653495">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="352" y="0" key="#aggressive_sumscore_decision_tree_classification/0.0.1280.720@0.0.1280.720" timestamp="1606130653495" />
+    <state x="352" y="0" key="#aggressive_sumscore_decision_tree_classification_66" timestamp="1606154582975">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="352" y="0" key="#aggressive_sumscore_decision_tree_classification_66/0.0.1280.720@0.0.1280.720" timestamp="1606154582975" />
+    <state x="352" y="0" key="#aggressive_sumscore_decision_tree_classification_75" timestamp="1606157045063">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="352" y="0" key="#aggressive_sumscore_decision_tree_classification_75/0.0.1280.720@0.0.1280.720" timestamp="1606157045063" />
+    <state x="352" y="0" key="#test" timestamp="1606397175111">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="352" y="0" key="#test/0.0.1280.720@0.0.1280.720" timestamp="1606397175111" />
+    <state x="421" y="116" key="FileChooserDialogImpl" timestamp="1606406604913">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="421" y="116" key="FileChooserDialogImpl/0.0.1280.720@0.0.1280.720" timestamp="1606406604913" />
+    <state width="1259" height="110" key="GridCell.Tab.0.bottom" timestamp="1606414500529">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state width="1259" height="110" key="GridCell.Tab.0.bottom/0.0.1280.720@0.0.1280.720" timestamp="1606414500529" />
+    <state width="1259" height="110" key="GridCell.Tab.0.center" timestamp="1606414500529">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state width="1259" height="110" key="GridCell.Tab.0.center/0.0.1280.720@0.0.1280.720" timestamp="1606414500529" />
+    <state width="1259" height="110" key="GridCell.Tab.0.left" timestamp="1606414500529">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state width="1259" height="110" key="GridCell.Tab.0.left/0.0.1280.720@0.0.1280.720" timestamp="1606414500529" />
+    <state width="1259" height="110" key="GridCell.Tab.0.right" timestamp="1606414500529">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state width="1259" height="110" key="GridCell.Tab.0.right/0.0.1280.720@0.0.1280.720" timestamp="1606414500529" />
+    <state width="1259" height="110" key="GridCell.Tab.1.bottom" timestamp="1606414500529">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state width="1259" height="110" key="GridCell.Tab.1.bottom/0.0.1280.720@0.0.1280.720" timestamp="1606414500529" />
+    <state width="1259" height="110" key="GridCell.Tab.1.center" timestamp="1606414500529">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state width="1259" height="110" key="GridCell.Tab.1.center/0.0.1280.720@0.0.1280.720" timestamp="1606414500529" />
+    <state width="1259" height="110" key="GridCell.Tab.1.left" timestamp="1606414500529">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state width="1259" height="110" key="GridCell.Tab.1.left/0.0.1280.720@0.0.1280.720" timestamp="1606414500529" />
+    <state width="1259" height="110" key="GridCell.Tab.1.right" timestamp="1606414500529">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state width="1259" height="110" key="GridCell.Tab.1.right/0.0.1280.720@0.0.1280.720" timestamp="1606414500529" />
+    <state x="645" y="184" key="com.intellij.ide.util.TipDialog" timestamp="1606702546309">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="645" y="184" key="com.intellij.ide.util.TipDialog/0.0.1280.720@0.0.1280.720" timestamp="1606702546309" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="sum(data['aggressive_sumscore']&gt;= q66)" language="Python" />
+        <watch expression="data['aggressive_sumscore']" language="Python" />
+        <watch expression="data['aggressive_sumscore'] == -1" language="Python" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
