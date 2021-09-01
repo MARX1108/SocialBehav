@@ -1,0 +1,114 @@
+---
+title: "Analysis"
+output: html_notebook
+---
+
+```{r}
+df <- read.csv('cleandata.csv')
+quantile(df$aggressive_sumscore, probs = c(0.66, 0.70))
+```
+
+```{r}
+#linear regression
+upr <- -0.73254990
+#upr <- -0.3717866
+  
+df <- read.csv('cleandata.csv')
+df <- subset(df, select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+
+reg <- lm(aggressive_sumscore ~ ., data=df)
+fitted <- reg$fitted.values
+pred <- predict(reg, newdata = , type="response")
+
+newdf <- data.frame('y' = df$aggressive_sumscore)
+newdf$fitted <- fitted
+newdf$original <- df$aggressive_sumscore
+
+
+newdf$class <- ifelse(newdf$y <= (-2.020650971), 0, ifelse(newdf$y>(upr),2,1))
+#change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
+newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 0, ifelse(newdf$fitted>(upr),2,1))
+
+mean(newdf$pred_class == newdf$class)
+confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
+```
+
+
+```{r}
+#step wise 
+upr <- -0.73254990
+#upr <- -0.3717866
+  
+df <- read.csv('cleandata.csv')
+df <- subset(df, select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+
+null <- lm(aggressive_sumscore ~ 1, data=df)
+full <- lm(aggressive_sumscore ~ ., data=df)
+
+reg <- step(null, scope=formula(full), direction="forward", k=log(nrow(df)), trace=0)
+summary(reg)
+
+fitted <- reg$fitted.values
+pred <- predict(reg, newdata = , type="response")
+
+newdf <- data.frame('y' = df$aggressive_sumscore)
+newdf$fitted <- fitted
+newdf$original <- df$aggressive_sumscore
+
+
+newdf$class <- ifelse(newdf$y <= (-2.020650971), 0, ifelse(newdf$y>(upr),2,1))
+#change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
+newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 0, ifelse(newdf$fitted>(upr),2,1))
+
+mean(newdf$pred_class == newdf$class)
+confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
+```
+
+```{r}
+#linear regression for strong corr attribute
+upr <- -0.73254990
+#upr <- -0.3717866
+  
+df <- read.csv('cleandata.csv')
+df <- subset(df, select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, asr_scr_perstr_t, asr_scr_somaticpr_t, asr_scr_inattention_t, crpbi_bothcare, kbi_p_c_best_friend, kbi_p_c_reg_friend_group, macv_p_ss_fs, macv_p_ss_fo, macv_p_ss_isr, 
+macv_p_ss_fr, macv_p_ss_r, demo_prnt_age_v2, demo_prnt_marital_v2, demo_comb_income_v2, demo_yrs_1, demo_yrs_2, parent_rules_q1, parent_rules_q4, parent_rules_q7, su_risk_p_1, su_risk_p_2_3, su_risk_p_4_5))
+
+reg <- lm(aggressive_sumscore ~ ., data=df)
+summary(reg)
+#reg <- step(null, scope=formula(full), direction="forward", k=log(nrow(df)), trace=0)
+summary(reg)
+
+fitted <- reg$fitted.values
+pred <- predict(reg, newdata = , type="response")
+
+newdf <- data.frame('y' = df$aggressive_sumscore)
+newdf$fitted <- fitted
+newdf$original <- df$aggressive_sumscore
+
+
+newdf$class <- ifelse(newdf$y <= (-2.020650971), 0, ifelse(newdf$y>(upr),2,1))
+#change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
+newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 0, ifelse(newdf$fitted>(upr),2,1))
+
+mean(newdf$pred_class == newdf$class)
+confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
+```
+
+```{r}
+summary(reg)
+```
+```{r}
+ndf <- read.csv('cleandata.csv')
+reg1 <- lm(aggressive_sumscore ~ prosocial_child + prosocial_parent, data=ndf)
+summary(reg1)
+
+reg2 <- lm(aggressive_sumscore ~ prosocial_child, data=ndf)
+summary(reg2)
+
+reg3 <- lm(aggressive_sumscore ~ prosocial_parent, data=ndf)
+summary(reg3)
+
+
+reg4 <- lm(aggressive_sumscore ~ prosocial_child + interview_age, data=ndf)
+summary(reg4)
+```
