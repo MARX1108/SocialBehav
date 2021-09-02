@@ -2,35 +2,48 @@
 title: "Analysis"
 output: html_notebook
 ---
-
 ```{r}
 df <- read.csv('cleandata.csv')
 quantile(df$aggressive_sumscore, probs = c(0.66, 0.70))
 ```
 
 ```{r}
-#linear regression
-upr <- -0.73254990
-#upr <- -0.3717866
+process <- function(df, reg, upr){
   
-df <- read.csv('cleandata.csv')
-df <- subset(df, select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+  newdf <- data.frame('y' = df$aggressive_sumscore)
+  newdf$fitted <- reg$fitted.values
+  
+  newdf$class <- ifelse(newdf$y <= (-2.020650971), 0, ifelse(newdf$y>(upr),2,1))
+  #change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
+  newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 0, ifelse(newdf$fitted>(upr),2,1))
+  
+  print(mean(newdf$pred_class == newdf$class))
+  print(confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) ))
+  
+  par(mfrow = c(2, 2))
+  plot(reg)
+}
 
-reg <- lm(aggressive_sumscore ~ ., data=df)
-fitted <- reg$fitted.values
-pred <- predict(reg, newdata = , type="response")
+outliers <- function(x, na.rm = TRUE, ...) {
+  qnt <- quantile(x, probs=c(.25, .75), na.rm = na.rm, ...)
+  H <- 1.5 * IQR(x, na.rm = na.rm)
+  y <- rep(TRUE, length(x))
+  #y[x < (qnt[1] - H)] <- FALSE
+  y[x > (qnt[2] + H)] <- FALSE
+  y
+}
 
-newdf <- data.frame('y' = df$aggressive_sumscore)
-newdf$fitted <- fitted
-newdf$original <- df$aggressive_sumscore
+```
 
-
-newdf$class <- ifelse(newdf$y <= (-2.020650971), 0, ifelse(newdf$y>(upr),2,1))
-#change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
-newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 0, ifelse(newdf$fitted>(upr),2,1))
-
-mean(newdf$pred_class == newdf$class)
-confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
+```{r}
+#OLS linear regression
+#upr <- -0.73254990
+#upr <- -0.3717866
+df <- subset(read.csv('cleandata.csv'), select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+#df <- df[outliers(df$aggressive_sumscore), ]
+reg <- lm(df$aggressive_sumscore ~ ., data=df)
+summary(reg)
+process(df, reg, upr = -0.73254990)
 ```
 
 
@@ -39,29 +52,31 @@ confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, leve
 upr <- -0.73254990
 #upr <- -0.3717866
   
-df <- read.csv('cleandata.csv')
-df <- subset(df, select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
 
+df <- subset(read.csv('cleandata.csv'), select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+df <- df[outliers(df$aggressive_sumscore), ]
 null <- lm(aggressive_sumscore ~ 1, data=df)
 full <- lm(aggressive_sumscore ~ ., data=df)
-
 reg <- step(null, scope=formula(full), direction="forward", k=log(nrow(df)), trace=0)
 summary(reg)
-
-fitted <- reg$fitted.values
-pred <- predict(reg, newdata = , type="response")
-
-newdf <- data.frame('y' = df$aggressive_sumscore)
-newdf$fitted <- fitted
-newdf$original <- df$aggressive_sumscore
+process(df, reg, -0.73254990)
+```
 
 
-newdf$class <- ifelse(newdf$y <= (-2.020650971), 0, ifelse(newdf$y>(upr),2,1))
-#change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
-newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 0, ifelse(newdf$fitted>(upr),2,1))
+```{r}
+#step wise with interaction
+upr <- -0.73254990
+#upr <- -0.3717866
+  
 
-mean(newdf$pred_class == newdf$class)
-confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
+df <- subset(read.csv('cleandata.csv'), select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+
+null <- lm(aggressive_sumscore ~ 1, data=df)
+full <- lm(aggressive_sumscore ~ .+.^2, data=df)
+reg <- step(null, scope=formula(full), direction="forward", k=log(nrow(df)), trace=0)
+summary(reg) #R2 = 0.4243
+
+process(df, reg, upr)
 ```
 
 ```{r}
@@ -69,29 +84,59 @@ confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, leve
 upr <- -0.73254990
 #upr <- -0.3717866
   
-df <- read.csv('cleandata.csv')
-df <- subset(df, select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, asr_scr_perstr_t, asr_scr_somaticpr_t, asr_scr_inattention_t, crpbi_bothcare, kbi_p_c_best_friend, kbi_p_c_reg_friend_group, macv_p_ss_fs, macv_p_ss_fo, macv_p_ss_isr, 
+df <- subset(read.csv('cleandata.csv'), select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, asr_scr_perstr_t, asr_scr_somaticpr_t, asr_scr_inattention_t, crpbi_bothcare, kbi_p_c_best_friend, kbi_p_c_reg_friend_group, macv_p_ss_fs, macv_p_ss_fo, macv_p_ss_isr, 
 macv_p_ss_fr, macv_p_ss_r, demo_prnt_age_v2, demo_prnt_marital_v2, demo_comb_income_v2, demo_yrs_1, demo_yrs_2, parent_rules_q1, parent_rules_q4, parent_rules_q7, su_risk_p_1, su_risk_p_2_3, su_risk_p_4_5))
 
 reg <- lm(aggressive_sumscore ~ ., data=df)
 summary(reg)
-#reg <- step(null, scope=formula(full), direction="forward", k=log(nrow(df)), trace=0)
+process(df, reg, upr)
+
+
+```
+
+```{r}
+
+df <- subset(read.csv('cleandata.csv'), select=-c(X, sex, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, asr_scr_perstr_t, asr_scr_somaticpr_t, asr_scr_inattention_t, crpbi_bothcare, kbi_p_c_best_friend, kbi_p_c_reg_friend_group, macv_p_ss_fs, macv_p_ss_fo, macv_p_ss_isr, 
+macv_p_ss_fr, macv_p_ss_r, demo_prnt_age_v2, demo_prnt_marital_v2, demo_comb_income_v2, demo_yrs_1, demo_yrs_2, parent_rules_q1, parent_rules_q4, parent_rules_q7, su_risk_p_1, su_risk_p_2_3, su_risk_p_4_5))
+
+fit <- kmeans(df, 2)
+
+
+df <- df[fit$cluster==2, ]
+reg <- lm(df$aggressive_sumscore ~ ., data=df)
 summary(reg)
-
-fitted <- reg$fitted.values
-pred <- predict(reg, newdata = , type="response")
-
-newdf <- data.frame('y' = df$aggressive_sumscore)
-newdf$fitted <- fitted
-newdf$original <- df$aggressive_sumscore
+process(df, reg, upr)
+```
 
 
-newdf$class <- ifelse(newdf$y <= (-2.020650971), 0, ifelse(newdf$y>(upr),2,1))
-#change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
-newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 0, ifelse(newdf$fitted>(upr),2,1))
+```{r}
 
-mean(newdf$pred_class == newdf$class)
-confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
+df <- subset(read.csv('cleandata.csv'), select=-c(X, sex, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, asr_scr_perstr_t, asr_scr_somaticpr_t, asr_scr_inattention_t, crpbi_bothcare, kbi_p_c_best_friend, kbi_p_c_reg_friend_group, macv_p_ss_fs, macv_p_ss_fo, macv_p_ss_isr, 
+macv_p_ss_fr, macv_p_ss_r, demo_prnt_age_v2, demo_prnt_marital_v2, demo_comb_income_v2, demo_yrs_1, demo_yrs_2, parent_rules_q1, parent_rules_q4, parent_rules_q7, su_risk_p_1, su_risk_p_2_3, su_risk_p_4_5))
+
+pcr <- pcr(aggressive_sumscore~., data=df)
+summary(pcr)
+process(df, pcr, upr)
+
+#df <- scale(df)
+#df <- df[fit$cluster==2, ]
+reg <- lm(as.data.frame(df)$aggressive_sumscore ~ ., data=as.data.frame(df))
+summary(reg)
+process(as.data.frame(df), reg, upr)
+
+# 
+# newdf <- data.frame('y' = df$aggressive_sumscore)
+# newdf$fitted <- reg$fitted.values
+# 
+# newdf$class <- ifelse(newdf$y <= (-2.020650971), 0, ifelse(newdf$y>(upr),2,1))
+# #change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
+# newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 0, ifelse(newdf$fitted>(upr),2,1))
+# 
+# print(mean(newdf$pred_class == newdf$class))
+# print(confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) ))
+# 
+# par(mfrow = c(2, 2))
+# plot(reg)
 ```
 
 ```{r}
@@ -107,7 +152,6 @@ summary(reg2)
 
 reg3 <- lm(aggressive_sumscore ~ prosocial_parent, data=ndf)
 summary(reg3)
-
 
 reg4 <- lm(aggressive_sumscore ~ prosocial_child + interview_age, data=ndf)
 summary(reg4)
