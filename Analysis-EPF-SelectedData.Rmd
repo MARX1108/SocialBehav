@@ -1,0 +1,207 @@
+---
+title: "Analysis2"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setup
+Enviroment Setup
+```{r, warning=FALSE, results='hide'}
+odf <- read.csv('./cleandata.csv')
+library('caret')
+#setwd('~/Desktop/andlab/code')
+```
+Function Define
+```{r}
+process <- function(df, reg, upr, plot=FALSE){
+  
+  newdf <- data.frame('y' = df$aggressive_sumscore)
+  newdf$fitted <- reg$fitted.values
+  
+  newdf$class <- ifelse(newdf$y <= (-2.020650971), 'L', ifelse(newdf$y>(upr),'M','H'))
+  #change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
+  newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 'L', ifelse(newdf$fitted>(upr),'M','H'))
+  
+  print(mean(newdf$pred_class == newdf$class))
+  #cm <- confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
+  cm <- confusionMatrix(table(newdf$class,newdf$pred_class))
+  if(plot)
+  {
+    par(mfrow = c(2, 2))
+    plot(reg)
+  }
+  return(cm=cm)
+}
+
+process_2_level <- function(df, reg, plot=FALSE){
+  
+  newdf <- data.frame('y' = df$aggressive_sumscore)
+  newdf$fitted <- reg$fitted.values
+  
+  newdf$class <- ifelse(newdf$y <= (-2.020650971), 'L', 'H')
+  #change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
+  newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 'L', 'H')
+  
+  print(mean(newdf$pred_class == newdf$class))
+  #cm <- confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
+  cm <- confusionMatrix(table(newdf$class,newdf$pred_class))
+  if(plot)
+  {
+    par(mfrow = c(2, 2))
+    plot(reg)
+  }
+  return(cm=cm)
+}
+```
+
+## Analysis W/ Selected Data, Selected Attributes
+```{r}
+df <- read.csv('cleandata.csv')
+odf<- df[(df$aggressive_sumscore  <= (-2.020650971)) | (df$aggressive_sumscore  >= (0.2168869)), ]
+odf$y <- ifelse(odf$aggressive_sumscore <= (-2.020650971), 0, 1)
+df <- subset(odf, select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, asr_scr_perstr_t, asr_scr_somaticpr_t, asr_scr_inattention_t,
+ crpbi_bothcare, kbi_p_c_best_friend, kbi_p_c_reg_friend_group, macv_p_ss_fs, macv_p_ss_fo, macv_p_ss_isr,macv_p_ss_fr, macv_p_ss_r, demo_prnt_age_v2, demo_prnt_marital_v2, demo_comb_income_v2, demo_yrs_1, demo_yrs_2, parent_rules_q1, parent_rules_q4, parent_rules_q7, su_risk_p_1, su_risk_p_2_3, su_risk_p_4_5, aggressive_sumscore))
+```
+
+###Logistic Regression
+Model Selection
+```{r}
+glm.fit <- glm(y ~ ., data = df, family = binomial)
+```
+Result
+```{r}
+summary(glm.fit)
+
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+
+###Logistic Regression W/ Interaction
+Model Selection
+```{r}
+glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
+```
+Result
+```{r}
+summary(glm.fit)
+
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+###Step Wise Logistic Regression StepWise
+Model Selection
+```{r}
+library(MASS)
+library(tidyverse)
+glm.fit <- glm(y ~ ., data = df, family = binomial)
+step.model <- glm.fit %>% stepAIC(trace = FALSE)
+
+```
+Result
+```{r}
+summary(step.model)
+cm <- confusionMatrix(table(as.numeric(step.model$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+###Logistic Regression W/ Interaction
+Model Selection
+```{r}
+glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
+step.model <- glm.fit %>% stepAIC(trace = FALSE)
+```
+Result
+```{r}
+summary(step.model )
+
+cm <- confusionMatrix(table(as.numeric(step.model $fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+## Analysis W/ Selected Data, All Attributes
+```{r}
+df <- read.csv('cleandata.csv')
+odf<- df[(df$aggressive_sumscore  <= (-2.020650971)) | (df$aggressive_sumscore  >= (0.2168869)), ]
+odf$y <- ifelse(odf$aggressive_sumscore <= (-2.020650971), 0, 1)
+df <- subset(odf, select=-c(X,aggressive_sumscore , prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+```
+
+###Logistic Regression
+Model Selection
+```{r}
+glm.fit <- glm(y ~ ., data = df, family = binomial)
+```
+Result
+```{r}
+summary(glm.fit)
+
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+
+###Logistic Regression W/ Interaction
+Model Selection
+```{r}
+glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
+```
+Result
+```{r}
+summary(glm.fit)
+
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+###Step Wise Logistic Regression StepWise
+Model Selection
+```{r}
+library(MASS)
+library(tidyverse)
+glm.fit <- glm(y ~ ., data = df, family = binomial)
+step.model <- glm.fit %>% stepAIC(trace = FALSE)
+
+```
+Result
+```{r}
+summary(step.model)
+cm <- confusionMatrix(table(as.numeric(step.model$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+###Logistic Regression W/ Interaction
+Model Selection
+```{r}
+glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
+step.model <- glm.fit %>% stepAIC(trace = FALSE)
+```
+Result
+```{r}
+summary(step.model )
+
+cm <- confusionMatrix(table(as.numeric(step.model $fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+

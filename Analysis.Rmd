@@ -8,7 +8,7 @@ quantile(df$aggressive_sumscore, probs = c(0.66, 0.70))
 ```
 
 ```{r}
-process <- function(df, reg, upr){
+process <- function(df, reg, upr, plot=FALSE){
   
   newdf <- data.frame('y' = df$aggressive_sumscore)
   newdf$fitted <- reg$fitted.values
@@ -18,10 +18,14 @@ process <- function(df, reg, upr){
   newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 0, ifelse(newdf$fitted>(upr),2,1))
   
   print(mean(newdf$pred_class == newdf$class))
-  print(confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) ))
-  
-  par(mfrow = c(2, 2))
-  plot(reg)
+  #cm <- confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
+  cm <- confusionMatrix(table(newdf$class,newdf$pred_class))
+  print(cm)
+  if(plot)
+  {
+    par(mfrow = c(2, 2))
+    plot(reg)
+  }
 }
 
 outliers <- function(x, na.rm = TRUE, ...) {
@@ -39,8 +43,13 @@ outliers <- function(x, na.rm = TRUE, ...) {
 #OLS linear regression
 #upr <- -0.73254990
 #upr <- -0.3717866
-df <- subset(read.csv('cleandata.csv'), select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+df <- subset(read.csv('cleandata.csv'), select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, sex))
 #df <- df[outliers(df$aggressive_sumscore), ]
+
+
+fit <- kmeans(df, 2)
+df <- df[fit$cluster==2, ]
+
 reg <- lm(df$aggressive_sumscore ~ ., data=df)
 summary(reg)
 process(df, reg, upr = -0.73254990)
@@ -51,8 +60,6 @@ process(df, reg, upr = -0.73254990)
 #step wise 
 upr <- -0.73254990
 #upr <- -0.3717866
-  
-
 df <- subset(read.csv('cleandata.csv'), select=-c(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
 df <- df[outliers(df$aggressive_sumscore), ]
 null <- lm(aggressive_sumscore ~ 1, data=df)
@@ -108,15 +115,46 @@ summary(reg)
 process(df, reg, upr)
 ```
 
+```{r}
+#clustering
 
+library("factoextra")
+
+df <- subset(read.csv('cleandata.csv'), select=-c(X, sex, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, asr_scr_perstr_t, asr_scr_somaticpr_t, asr_scr_inattention_t, crpbi_bothcare, kbi_p_c_best_friend, kbi_p_c_reg_friend_group, macv_p_ss_fs, macv_p_ss_fo, macv_p_ss_isr, 
+macv_p_ss_fr, macv_p_ss_r, demo_prnt_age_v2, demo_prnt_marital_v2, demo_comb_income_v2, demo_yrs_1, demo_yrs_2, parent_rules_q1, parent_rules_q4, parent_rules_q7, su_risk_p_1, su_risk_p_2_3, su_risk_p_4_5))
+#fviz_nbclust(df, kmeans, method = "gap_stat")
+fviz_nbclust(df, kmeans, method = "wss") +
+    geom_vline(xintercept = 4, linetype = 2)+
+  labs(subtitle = "Elbow method")
+```
+
+```{r}
+library("factoextra")
+
+df <- subset(read.csv('cleandata.csv'), select=-c(X, sex, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, asr_scr_perstr_t, asr_scr_somaticpr_t, asr_scr_inattention_t, crpbi_bothcare, kbi_p_c_best_friend, kbi_p_c_reg_friend_group, macv_p_ss_fs, macv_p_ss_fo, macv_p_ss_isr, 
+macv_p_ss_fr, macv_p_ss_r, demo_prnt_age_v2, demo_prnt_marital_v2, demo_comb_income_v2, demo_yrs_1, demo_yrs_2, parent_rules_q1, parent_rules_q4, parent_rules_q7, su_risk_p_1, su_risk_p_2_3, su_risk_p_4_5))
+
+
+fit <- kmeans(df, 4)
+
+
+ndf <- df[fit$cluster==3, ]
+reg <- lm(ndf$aggressive_sumscore ~ ., data=ndf)
+summary(reg)
+process(ndf, reg, upr)
+
+```
 ```{r}
 
 df <- subset(read.csv('cleandata.csv'), select=-c(X, sex, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, asr_scr_perstr_t, asr_scr_somaticpr_t, asr_scr_inattention_t, crpbi_bothcare, kbi_p_c_best_friend, kbi_p_c_reg_friend_group, macv_p_ss_fs, macv_p_ss_fo, macv_p_ss_isr, 
 macv_p_ss_fr, macv_p_ss_r, demo_prnt_age_v2, demo_prnt_marital_v2, demo_comb_income_v2, demo_yrs_1, demo_yrs_2, parent_rules_q1, parent_rules_q4, parent_rules_q7, su_risk_p_1, su_risk_p_2_3, su_risk_p_4_5))
 
 pcr <- pcr(aggressive_sumscore~., data=df)
+
 summary(pcr)
-process(df, pcr, upr)
+
+
+#process(df, pcr, upr)
 
 #df <- scale(df)
 #df <- df[fit$cluster==2, ]

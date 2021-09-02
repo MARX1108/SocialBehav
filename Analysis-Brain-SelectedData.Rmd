@@ -1,0 +1,87 @@
+---
+title: "Analysis-Brain-SelectedData"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setup
+Enviroment Setup
+```{r, warning=FALSE, results='hide'}
+#setwd('~/Desktop/andlab/code')
+odf <- read.csv('./brain_cb.csv')
+odf <- odf[complete.cases(odf), ]        
+odf<- df[(df$aggressive_sumscore  <= (-2.02065)) | (df$aggressive_sumscore  >= (0.2168869)), ]
+odf$y <- ifelse(odf$aggressive_sumscore <= (-2.02065), 0, 1)
+
+library('caret')
+#setwd('~/Desktop/andlab/code')
+```
+
+## Analysis W/ All Data, All Attributes
+Attribute selection
+```{r}
+df <- subset(odf, select=-c(prosocial_child, prosocial_parent, subjectkey, aggressive_sumscore))
+```
+
+### Logistic Regression
+Model Selection
+```{r}
+reg <- glm(y ~ ., data = df, family = binomial)
+```
+Result
+```{r}
+summary(reg)
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+### OLS W/ Interaction
+Model Selection
+```{r}
+reg <- glm(y ~ . + .^2, data = df, family = binomial)
+```
+Result
+```{r}
+summary(reg)
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+### Stepwise
+Model Selection
+```{r}
+library(MASS)
+library(tidyverse)
+glm.fit <- glm(y ~ ., data = df, family = binomial)
+step.model <- glm.fit %>% stepAIC(trace = FALSE)
+```
+Result
+```{r}
+summary(step.model)
+cm <- confusionMatrix(table(as.numeric(step.model$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+### Stepwise W/ Interaction
+Model Selection
+```{r}
+glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
+step.model <- glm.fit %>% stepAIC(trace = FALSE)
+```
+Result
+```{r}
+summary(step.model)
+cm <- confusionMatrix(table(as.numeric(step.model$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+

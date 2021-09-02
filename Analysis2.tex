@@ -1,0 +1,313 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={Analysis2},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Analysis2}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\hypertarget{setup}{%
+\subsection{Setup}\label{setup}}
+
+\hypertarget{enviroment-setup}{%
+\subsubsection{enviroment setup}\label{enviroment-setup}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{odf <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'./cleandata.csv'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'caret'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'caret' was built under R version 3.6.2
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: ggplot2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#setwd('~/Desktop/andlab/code')}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{function-define}{%
+\subsubsection{function define}\label{function-define}}
+
+\hypertarget{attribute-selection}{%
+\subsection{Attribute selection}\label{attribute-selection}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(odf, }\DataTypeTok{select=}\OperatorTok{-}\KeywordTok{c}\NormalTok{(X, prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{model-selection}{%
+\subsection{Model Selection}\label{model-selection}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reg <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(df}\OperatorTok{$}\NormalTok{aggressive_sumscore }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{data=}\NormalTok{df)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{result}{%
+\subsection{Result}\label{result}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(reg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = df$aggressive_sumscore ~ ., data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.8719 -1.3256 -0.2719  0.6299 23.5059 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)              -1.359e+01  9.854e-01 -13.791  < 2e-16 ***
+## asr_scr_perstr_t          1.634e-02  3.125e-03   5.228 1.74e-07 ***
+## asr_scr_anxdep_t         -1.602e-02  1.349e-02  -1.188  0.23490    
+## asr_scr_withdrawn_t       2.066e-02  1.032e-02   2.003  0.04525 *  
+## asr_scr_somatic_t        -1.165e-02  1.814e-02  -0.642  0.52069    
+## asr_scr_thought_t         4.833e-02  8.285e-03   5.834 5.59e-09 ***
+## asr_scr_attention_t       4.186e-02  1.450e-02   2.888  0.00389 ** 
+## asr_scr_aggressive_t      2.377e-02  1.258e-02   1.890  0.05882 .  
+## asr_scr_rulebreak_t       1.178e-02  1.058e-02   1.113  0.26584    
+## asr_scr_intrusive_t      -4.153e-03  9.979e-03  -0.416  0.67728    
+## asr_scr_internal_t        1.197e-02  1.207e-02   0.992  0.32139    
+## asr_scr_external_t        2.688e-02  9.620e-03   2.794  0.00522 ** 
+## asr_scr_totprob_t        -1.844e-02  1.607e-02  -1.148  0.25118    
+## asr_scr_depress_t        -3.107e-04  1.161e-02  -0.027  0.97865    
+## asr_scr_anxdisord_t      -2.626e-03  8.778e-03  -0.299  0.76483    
+## asr_scr_somaticpr_t       3.347e-02  1.463e-02   2.287  0.02222 *  
+## asr_scr_avoidant_t        4.095e-03  9.430e-03   0.434  0.66410    
+## asr_scr_adhd_t           -3.375e-02  3.039e-02  -1.111  0.26680    
+## asr_scr_antisocial_t      7.819e-03  1.269e-02   0.616  0.53767    
+## asr_scr_inattention_t    -7.126e-03  1.905e-02  -0.374  0.70836    
+## asr_scr_hyperactive_t     3.949e-02  2.066e-02   1.912  0.05594 .  
+## crpbi_bothcare            1.107e-03  4.177e-03   0.265  0.79097    
+## parent_monitor_y         -1.190e-01  5.600e-02  -2.126  0.03354 *  
+## kbi_p_conflict            2.439e+00  6.576e-02  37.098  < 2e-16 ***
+## kbi_p_c_best_friend      -4.124e-03  3.643e-02  -0.113  0.90987    
+## kbi_p_c_reg_friend_group -7.763e-02  5.638e-02  -1.377  0.16862    
+## kbi_p_c_bully             1.204e+00  7.771e-02  15.488  < 2e-16 ***
+## kbi_p_c_mh_sa             1.584e+00  6.643e-02  23.839  < 2e-16 ***
+## fes_youth                 8.341e-02  1.464e-02   5.696 1.26e-08 ***
+## fes_p_ss_fc_pr            1.704e-01  1.569e-02  10.862  < 2e-16 ***
+## macv_p_ss_fs              1.191e-02  6.505e-02   0.183  0.85469    
+## macv_p_ss_fo             -4.349e-03  6.085e-02  -0.071  0.94302    
+## macv_p_ss_isr             7.783e-02  4.854e-02   1.604  0.10883    
+## macv_p_ss_fr              7.948e-02  5.396e-02   1.473  0.14080    
+## macv_p_ss_r               1.510e-01  3.469e-02   4.354 1.35e-05 ***
+## demo_prnt_age_v2          2.018e-03  4.368e-03   0.462  0.64400    
+## demo_prnt_marital_v2      5.811e-02  1.983e-02   2.930  0.00340 ** 
+## demo_comb_income_v2      -8.328e-02  1.643e-02  -5.070 4.05e-07 ***
+## demo_fam_exp              2.423e-01  7.854e-02   3.085  0.00204 ** 
+## demo_yrs_1                4.284e-03  2.974e-02   0.144  0.88548    
+## demo_yrs_2               -9.898e-02  4.233e-02  -2.338  0.01941 *  
+## parent_rules_q1           6.462e-02  5.081e-02   1.272  0.20344    
+## parent_rules_q4           5.858e-02  5.620e-02   1.042  0.29723    
+## parent_rules_q7          -9.391e-02  5.007e-02  -1.876  0.06074 .  
+## su_risk_p_1              -1.744e-02  2.443e-02  -0.714  0.47546    
+## su_risk_p_2_3             2.811e-02  3.651e-02   0.770  0.44138    
+## su_risk_p_4_5            -3.462e-02  3.858e-02  -0.897  0.36953    
+## neighborhood1_2_3_p      -5.099e-02  3.164e-02  -1.612  0.10706    
+## neighborhood_crime_y     -8.449e-02  2.688e-02  -3.144  0.00167 ** 
+## sexM                      2.765e-01  5.441e-02   5.081 3.82e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.678 on 10128 degrees of freedom
+## Multiple R-squared:  0.391,  Adjusted R-squared:  0.388 
+## F-statistic: 132.7 on 49 and 10128 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cm <-}\StringTok{ }\KeywordTok{process}\NormalTok{(df, reg, }\FloatTok{-0.73254990}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.4793673
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{print}\NormalTok{(cm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Confusion Matrix and Statistics
+## 
+##    
+##        H    L    M
+##   H 1010  280 1379
+##   L 1918 1087 1034
+##   M  596   92 2782
+## 
+## Overall Statistics
+##                                           
+##                Accuracy : 0.4794          
+##                  95% CI : (0.4696, 0.4891)
+##     No Information Rate : 0.5104          
+##     P-Value [Acc > NIR] : 1               
+##                                           
+##                   Kappa : 0.2324          
+##                                           
+##  Mcnemar's Test P-Value : <2e-16          
+## 
+## Statistics by Class:
+## 
+##                      Class: H Class: L Class: M
+## Sensitivity           0.28661   0.7450   0.5355
+## Specificity           0.75068   0.6614   0.8619
+## Pos Pred Value        0.37842   0.2691   0.8017
+## Neg Pred Value        0.66520   0.9394   0.6403
+## Prevalence            0.34624   0.1433   0.5104
+## Detection Rate        0.09923   0.1068   0.2733
+## Detection Prevalence  0.26223   0.3968   0.3409
+## Balanced Accuracy     0.51864   0.7032   0.6987
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{print}\NormalTok{(cm}\OperatorTok{$}\NormalTok{byClass)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          Sensitivity Specificity Pos Pred Value Neg Pred Value Precision
+## Class: H   0.2866061   0.7506763      0.3784189      0.6652018 0.3784189
+## Class: L   0.7450308   0.6614291      0.2691260      0.9394038 0.2691260
+## Class: M   0.5355149   0.8619306      0.8017291      0.6402803 0.8017291
+##             Recall        F1 Prevalence Detection Rate Detection Prevalence
+## Class: H 0.2866061 0.3261747  0.3462370     0.09923364            0.2622323
+## Class: L 0.7450308 0.3954165  0.1433484     0.10679898            0.3968363
+## Class: M 0.5355149 0.6421235  0.5104146     0.27333464            0.3409314
+##          Balanced Accuracy
+## Class: H         0.5186412
+## Class: L         0.7032300
+## Class: M         0.6987227
+\end{verbatim}
+
+\end{document}
