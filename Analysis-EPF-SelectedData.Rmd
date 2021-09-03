@@ -117,7 +117,7 @@ print(cm$byClass)
 ```
 
 
-###Logistic Regression W/ Interaction
+###Step Wise Logistic Regression W/ Interaction
 Model Selection
 ```{r}
 glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
@@ -190,7 +190,7 @@ print(cm$byClass)
 ```
 
 
-###Logistic Regression W/ Interaction
+###Step WiseLogistic Regression W/ Interaction
 Model Selection
 ```{r}
 glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)

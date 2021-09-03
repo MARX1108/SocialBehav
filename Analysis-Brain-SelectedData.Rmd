@@ -11,8 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Setup
 Enviroment Setup
-```{r, warning=FALSE, results='hide'}
-#setwd('~/Desktop/andlab/code')
+```{r, warning=FALSE}
 odf <- read.csv('./brain_cb.csv')
 odf <- odf[complete.cases(odf), ]        
 odf<- df[(df$aggressive_sumscore  <= (-2.02065)) | (df$aggressive_sumscore  >= (0.2168869)), ]
