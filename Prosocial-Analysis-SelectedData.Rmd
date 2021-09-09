@@ -1,0 +1,132 @@
+---
+title: "Prosocial Analysis"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Prosocial Child, All Attributes
+```{r}
+library('caret')
+df <- read.csv('cleandata.csv')
+odf<- df[(df$prosocial_child  <= (3)) | (df$prosocial_child  == 6), ]
+odf$y <- ifelse(odf$prosocial_child <= (3), 0, 1)
+df <- subset(odf, select=-c(X,aggressive_sumscore , prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+
+```
+
+###Logistic Regression
+Model Selection
+```{r}
+glm.fit <- glm(y ~ ., data = df, family = binomial)
+```
+Result
+```{r}
+summary(glm.fit)
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+## Prosocial Parent, All Attributes
+```{r}
+library('caret')
+df <- read.csv('cleandata.csv')
+odf<- df[(df$prosocial_parent  <= (3)) | (df$prosocial_parent  == 6), ]
+odf$y <- ifelse(odf$prosocial_parent <= (3), 0, 1)
+df <- subset(odf, select=-c(X,aggressive_sumscore , prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
+
+```
+
+###Logistic Regression
+Model Selection
+```{r}
+glm.fit <- glm(y ~ ., data = df, family = binomial)
+```
+Result
+```{r}
+summary(glm.fit)
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+## Prosocial Parent + Child, All Attributes
+```{r}
+df <- read.csv('cleandata.csv')
+df<- df[(df$prosocial_parent  <= (3)) | (df$prosocial_parent  == 6), ]
+df<- df[(df$prosocial_child <= (3)) | (df$prosocial_child  == 6), ]
+
+df$prosocial_sum <- df$prosocial_parent+df$prosocial_child
+df$y <- ifelse(df$prosocial_sum <= (6), 0, 1)
+df <- subset(df, select=-c(X,aggressive_sumscore , prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, prosocial_sum))
+
+```
+
+###Logistic Regression
+Model Selection
+```{r}
+glm.fit <- glm(y ~ ., data = df, family = binomial)
+```
+Result
+```{r}
+summary(glm.fit)
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+
+
+## Prosocial Child, brain
+Attribute selection
+```{r}
+df <- read.csv('./brain_cb.csv')
+df <- df[complete.cases(df), ]      
+odf<- df[(df$prosocial_child  <= (3)) | (df$prosocial_child  == 6), ]
+odf$y <- ifelse(odf$prosocial_child <= (3), 0, 1)
+df <- subset(odf, select=-c(aggressive_sumscore, prosocial_child, prosocial_parent, subjectkey))
+```
+
+### Logistic Regression
+Model Selection
+```{r}
+reg <- glm(y ~ ., data = df, family = binomial)
+```
+Result
+```{r}
+summary(reg)
+cm <- confusionMatrix(table(as.numeric(reg$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
+```
+
+
+## Prosocial Parent, brain
+Attribute selection
+```{r}
+df <- read.csv('./brain_cb.csv')
+df <- df[complete.cases(df), ]      
+odf <- df[(df$prosocial_parent  <= (3)) | (df$prosocial_parent  == 6), ]
+odf$y <- ifelse(odf$prosocial_parent <= (3), 0, 1)
+df <- subset(odf, select=-c(aggressive_sumscore, prosocial_child, prosocial_parent, subjectkey))
+```
+
+### Logistic Regression
+Model Selection
+```{r}
+reg <- glm(y ~ ., data = df, family = binomial)
+```
+Result
+```{r}
+summary(reg)
+#cm <- confusionMatrix(table(as.numeric(reg$fitted.values>0.5), df$y))
+#print(cm)
+#print(cm$byClass)
+```

@@ -1,5 +1,5 @@
 ---
-title: "Analysis2"
+title: "Analysis-EPF-SelectedData"
 output:
   html_document: default
   pdf_document: default
@@ -16,47 +16,26 @@ odf <- read.csv('./cleandata.csv')
 library('caret')
 #setwd('~/Desktop/andlab/code')
 ```
-Function Define
+## Additional Analysis W/ Selected Data, Significant Attributes
 ```{r}
-process <- function(df, reg, upr, plot=FALSE){
-  
-  newdf <- data.frame('y' = df$aggressive_sumscore)
-  newdf$fitted <- reg$fitted.values
-  
-  newdf$class <- ifelse(newdf$y <= (-2.020650971), 'L', ifelse(newdf$y>(upr),'M','H'))
-  #change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
-  newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 'L', ifelse(newdf$fitted>(upr),'M','H'))
-  
-  print(mean(newdf$pred_class == newdf$class))
-  #cm <- confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
-  cm <- confusionMatrix(table(newdf$class,newdf$pred_class))
-  if(plot)
-  {
-    par(mfrow = c(2, 2))
-    plot(reg)
-  }
-  return(cm=cm)
-}
+df <- read.csv('cleandata.csv')
+odf<- df[(df$aggressive_sumscore  <= (-2.020650971)) | (df$aggressive_sumscore  >= (0.2168869)), ]
+odf$y <- ifelse(odf$aggressive_sumscore <= (-2.020650971), 0, 1)
+df <- subset(odf, select=c(y, asr_scr_perstr_t, asr_scr_anxdep_t, asr_scr_aggressive_t, asr_scr_rulebreak_t, asr_scr_external_t, asr_scr_totprob_t, kbi_p_conflict, kbi_p_c_bully, kbi_p_c_mh_sa, fes_youth, fes_p_ss_fc_pr, macv_p_ss_r, demo_prnt_age_v2, demo_prnt_marital_v2, demo_comb_income_v2, demo_fam_exp, demo_yrs_2, neighborhood_crime_y, sex))
+```
 
-process_2_level <- function(df, reg, plot=FALSE){
-  
-  newdf <- data.frame('y' = df$aggressive_sumscore)
-  newdf$fitted <- reg$fitted.values
-  
-  newdf$class <- ifelse(newdf$y <= (-2.020650971), 'L', 'H')
-  #change == -2.020650971 to change <= -2.020650971 to solve prediction for 0 is 0
-  newdf$pred_class <-ifelse(newdf$fitted <= (-2.020650971), 'L', 'H')
-  
-  print(mean(newdf$pred_class == newdf$class))
-  #cm <- confusionMatrix(factor(newdf$pred_class, levels = 0:2), factor(newdf$class, levels = 0:2) )
-  cm <- confusionMatrix(table(newdf$class,newdf$pred_class))
-  if(plot)
-  {
-    par(mfrow = c(2, 2))
-    plot(reg)
-  }
-  return(cm=cm)
-}
+###Logistic Regression
+Model Selection
+```{r}
+glm.fit <- glm(y ~ ., data = df, family = binomial)
+```
+Result
+```{r}
+summary(glm.fit)
+
+cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), df$y))
+print(cm)
+print(cm$byClass)
 ```
 
 ## Analysis W/ Selected Data, Selected Attributes
@@ -120,16 +99,16 @@ print(cm$byClass)
 ###Step Wise Logistic Regression W/ Interaction
 Model Selection
 ```{r}
-glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
-step.model <- glm.fit %>% stepAIC(trace = FALSE)
+#glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
+#step.model <- glm.fit %>% stepAIC(trace = FALSE)
 ```
 Result
 ```{r}
-summary(step.model )
+#summary(step.model )
 
-cm <- confusionMatrix(table(as.numeric(step.model $fitted.values>0.5), df$y))
-print(cm)
-print(cm$byClass)
+#cm <- confusionMatrix(table(as.numeric(step.model $fitted.values>0.5), df$y))
+#print(cm)
+#print(cm$byClass)
 ```
 
 
@@ -193,15 +172,15 @@ print(cm$byClass)
 ###Step WiseLogistic Regression W/ Interaction
 Model Selection
 ```{r}
-glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
-step.model <- glm.fit %>% stepAIC(trace = FALSE)
+#glm.fit <- glm(y ~ . + .^2, data = df, family = binomial)
+#step.model <- glm.fit %>% stepAIC(trace = FALSE)
 ```
 Result
 ```{r}
-summary(step.model )
+#summary(step.model )
 
-cm <- confusionMatrix(table(as.numeric(step.model $fitted.values>0.5), df$y))
-print(cm)
-print(cm$byClass)
+#cm <- confusionMatrix(table(as.numeric(step.model $fitted.values>0.5), df$y))
+#print(cm)
+#print(cm$byClass)
 ```
 

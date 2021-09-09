@@ -8,6 +8,16 @@ quantile(df$aggressive_sumscore, probs = c(0.66, 0.70))
 ```
 
 ```{r}
+df <- read.csv('cleandata.csv')
+#quantile(df$aggressive_sumscore, probs = c(0.75))
+
+ndf<- df[(df$aggressive_sumscore  <= (-2.020650971)) | (df$aggressive_sumscore  >= (0.2168869)), ]
+
+
+```
+
+
+```{r}
 process <- function(df, reg, upr, plot=FALSE){
   
   newdf <- data.frame('y' = df$aggressive_sumscore)
