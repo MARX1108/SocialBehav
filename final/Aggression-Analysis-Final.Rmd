@@ -1,5 +1,5 @@
 ---
-title: "Prosocial Analysis"
+title: "Aggression Analysis"
 output:
   html_document: default
   pdf_document: default
@@ -35,19 +35,11 @@ histplot <- function(cm_tb)
   singlehistplot(cm_tb$F1, main="F1")
 }
 
-prosocial_preprocessing <- function(df)
+aggression_preprocessing <- function(df)
 {
   df <- df[complete.cases(df), ]      
-  df<- df[(df$prosocial_parent  <= (3)) | (df$prosocial_parent  == 6), ]
-  df<- df[(df$prosocial_child <= (3)) | (df$prosocial_child  == 6), ]
-  df$prosocial_sum <- df$prosocial_parent+df$prosocial_child
-  df <- df[df$prosocial_sum != 9, ]
-  df <- df[df$prosocial_sum != 8, ]
-  df <- df[df$prosocial_sum != 7, ]
-  cut <- df[df$prosocial_sum == 6, ]
-  cut <- cut[cut$prosocial_child != 3, ]
-  df <- subset(df, !(subjectkey %in% cut$subjectkey))
-  df$y <- ifelse(df$prosocial_sum <= (6), 0, 1)
+  df<- df[(df$aggressive_sumscore  <= (-2.020650971)) | (df$aggressive_sumscore  >= (0.2168869)), ]
+  df$y <- ifelse(df$aggressive_sumscore <= (-2.020650971), 0, 1)
   return(df)
 }
 
@@ -61,7 +53,7 @@ twoclasssample <- function(df, n)
   return(finaldf)
 }
 
-bootstrap_glm <- function(df, T, plot=TRUE)
+bootstrap_glm <- function(df, T, plot=TRUE, n)
 {
   names <- c("Sensitivity", "Specificity", "Pos Pred Value", "Neg Pred Value", "Precision", "Recall", "F1", "Prevalence", "Detection Rate", "Detection Prevalence", "Balanced Accuracy", 'Accuracy', 'AIC', 'Converged')
   
@@ -69,7 +61,7 @@ bootstrap_glm <- function(df, T, plot=TRUE)
   colnames(cm_tb) <- names
   
   for (t in 1:T){
-    finaldf <- twoclasssample(df, n=200)
+    finaldf <- twoclasssample(df, n=n)
     glm.fit <- glm(y ~ ., data = finaldf, family = binomial)
     cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), finaldf$y))
     
@@ -101,7 +93,7 @@ singleglm <- function(df)
 ## EPF
 ```{r}
 df<-prosocial_preprocessing(read.csv('cleandata.csv'))
-df <- subset(df, select=-c(X,aggressive_sumscore , prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey, prosocial_sum))
+df <- subset(df, select=-c(X,aggressive_sumscore , prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
 ```
 
 ```{r}
@@ -109,8 +101,8 @@ singleglm(df)
 ```
 
 ```{r}
-cm_tb<-bootstrap_glm(df, T=5000)
-write.csv(cm_tb,"./final/EPF-glm.csv", row.names = FALSE)
+cm_tb<-bootstrap_glm(df, T=5000, n=4000)
+write.csv(cm_tb,"./final/aggression-EPF-glm.csv", row.names = FALSE)
 ```
 
  
