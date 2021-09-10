@@ -27,6 +27,7 @@ singlehistplot <- function(df,main)
 histplot <- function(cm_tb)
 {
   singlehistplot(cm_tb$Accuracy, main="Accuracy")
+  singlehistplot(cm_tb$`Test Accuracy`, main="Test Accuracy")
   singlehistplot(cm_tb$AIC, main="AIC")
   singlehistplot(cm_tb$`Balanced Accuracy`, main="Balanced Accuracy")
   singlehistplot(cm_tb$Sensitivity, main="Sensitivity")
@@ -39,8 +40,8 @@ histplot <- function(cm_tb)
 aggression_preprocessing <- function(df)
 {
   df <- df[complete.cases(df), ]      
-  df<- df[(df$aggressive_sumscore  <= (-2.020650971)) | (df$aggressive_sumscore  >= (0.2168869)), ]
-  df$y <- ifelse(df$aggressive_sumscore <= (-2.020650971), 0, 1)
+  df<- df[(df$aggressive_sumscore  <= (-2.0205)) | (df$aggressive_sumscore  >= (0.2168869)), ]
+  df$y <- ifelse(df$aggressive_sumscore <= (-2.0205), 0, 1)
   return(df)
 }
 
@@ -61,7 +62,7 @@ bootstrap_glm <- function(df, T, plot=TRUE, filesname)
   cm_tb <- data.frame(matrix(ncol = length(names), nrow = 0))
   colnames(cm_tb) <- names
   
-  finaldf <- twoclasssample(df, n=4000)
+  finaldf <- twoclasssample(df, n=2000)
   dt = sort(sample(nrow(finaldf), nrow(finaldf)*.75))
   train<-finaldf[dt,]
   test<-finaldf[-dt,]
@@ -70,16 +71,18 @@ bootstrap_glm <- function(df, T, plot=TRUE, filesname)
   s_tb <- as.data.frame(t(coef(summary(glm.fit))[,4]))
   
   for (t in 1:T){
-    finaldf <- twoclasssample(df, n=4000)
+    
+    finaldf <- twoclasssample(df, n=2000)
     
     dt = sort(sample(nrow(finaldf), nrow(finaldf)*.75))
     train<-finaldf[dt,]
     test<-finaldf[-dt,]
 
     glm.fit <- glm(y ~ ., data = train, family = binomial)
-    
+    #fitted.value <- predict(glm.fit,newdata = train,type="response")
+
   
-    cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5),train$y))
+    cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.value>0.5),train$y))
     pred <- predict(glm.fit, test)
     cm2 <- confusionMatrix(table(as.numeric(pred>0.5), test$y))
   
@@ -127,13 +130,14 @@ write.csv(cm_tb,"./Aggression-Results-EPF.csv", row.names = FALSE)
 ## Brain
 Attribute selection
 ```{r}
-df<-aggression_preprocessing(read.csv('./brain_cb.csv'))
+df <- read.csv('./brain_cb.csv')
+df <- aggression_preprocessing(df)
 df <- subset(df, select=-c(aggressive_sumscore, prosocial_child, prosocial_parent, subjectkey))
 ```
 
 ```{r}
-cm_tb<-bootstrap_glm(df, T=GlobalT, filesname = './Prosocial-Attributes-brain.csv')
-write.csv(cm_tb,"./Prosocial-Results-brain.csv", row.names = FALSE)
+cm_tb<-bootstrap_glm(df, T=GlobalT, filesname = './Aggression-Attributes-brain.csv')
+write.csv(cm_tb,"./Aggression-Results-brain.csv", row.names = FALSE)
 ```
 
 ## Brain + EPF
@@ -143,11 +147,11 @@ df <- df[complete.cases(df), ]
 df<- df[(df$aggressive_sumscore.x  <= (-2.020650971)) | (df$aggressive_sumscore.x  >= (0.2168869)), ]
 df$y <- ifelse(df$aggressive_sumscore.x <= (-2.020650971), 0, 1)
 
-df <- subset(df, select=-c(X, prosocial_parent.x, prosocial_child.x, interview_date,subjectkey, aggressive_sumscore.x, interview_age, aggressive_sumscore.y, prosocial_child.y, prosocial_parent.y,prosocial_sum))
+df <- subset(df, select=-c(X, prosocial_parent.x, prosocial_child.x, interview_date,subjectkey, aggressive_sumscore.x, interview_age, aggressive_sumscore.y, prosocial_child.y, prosocial_parent.y))
 #write.csv(df, './final/prosocialEPFbrain.csv', row.names = FALSE)
 ```
 
 ```{r}
-cm_tb<-bootstrap_glm(df, T=GlobalT, filesname = './Prosocial-Attributes-brain+EPF.csv')
-write.csv(cm_tb,"./Prosocial-Results-brain+EPF.csv", row.names = FALSE)
+cm_tb<-bootstrap_glm(df, T=GlobalT, filesname = './Aggression-Attributes-brain+EPF.csv')
+write.csv(cm_tb,"./Aggression-Results-brain+EPF.csv", row.names = FALSE)
 ```
