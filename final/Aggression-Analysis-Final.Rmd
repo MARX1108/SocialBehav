@@ -13,12 +13,13 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ##function definition & library
 ```{r}
 library(caret)
+GlobalT <- 2
 singlehistplot <- function(df,main)
 {
   #sprintf("mean = %f ", mean(df))
-  hist(df, main)
+  hist(df, main=main)
   qts <- quantile(df,probs=c(.025,.975))
-  hist(df)
+  hist(df, main=main)
   abline(v=qts[1],col="red")
   abline(v=qts[2],col="red")
 }
@@ -53,25 +54,47 @@ twoclasssample <- function(df, n)
   return(finaldf)
 }
 
-bootstrap_glm <- function(df, T, plot=TRUE, n)
+bootstrap_glm <- function(df, T, plot=TRUE, filesname)
 {
-  names <- c("Sensitivity", "Specificity", "Pos Pred Value", "Neg Pred Value", "Precision", "Recall", "F1", "Prevalence", "Detection Rate", "Detection Prevalence", "Balanced Accuracy", 'Accuracy', 'AIC', 'Converged')
+  names <- c("Sensitivity", "Specificity", "Pos Pred Value", "Neg Pred Value", "Precision", "Recall", "F1", "Prevalence", "Detection Rate", "Detection Prevalence", "Balanced Accuracy", 'Accuracy', 'AIC', 'Converged', 'Test Accuracy')
   
   cm_tb <- data.frame(matrix(ncol = length(names), nrow = 0))
   colnames(cm_tb) <- names
   
+  finaldf <- twoclasssample(df, n=4000)
+  dt = sort(sample(nrow(finaldf), nrow(finaldf)*.75))
+  train<-finaldf[dt,]
+  test<-finaldf[-dt,]
+  glm.fit <- glm(y ~ ., data = train, family = binomial)
+  
+  s_tb <- as.data.frame(t(coef(summary(glm.fit))[,4]))
+  
   for (t in 1:T){
-    finaldf <- twoclasssample(df, n=n)
-    glm.fit <- glm(y ~ ., data = finaldf, family = binomial)
-    cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), finaldf$y))
+    finaldf <- twoclasssample(df, n=4000)
     
+    dt = sort(sample(nrow(finaldf), nrow(finaldf)*.75))
+    train<-finaldf[dt,]
+    test<-finaldf[-dt,]
+
+    glm.fit <- glm(y ~ ., data = train, family = binomial)
+    
+  
+    cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5),train$y))
+    pred <- predict(glm.fit, test)
+    cm2 <- confusionMatrix(table(as.numeric(pred>0.5), test$y))
+  
     v <- t(cm$byClass)
     v<-append(v, cm$overall[1])
     v<-append(v, glm.fit$aic)
     v<-append(v, glm.fit$converged)
+    v<-append(v, cm2$overall[1])
+
     cm_tb <- rbind(cm_tb, as.data.frame(t(v)))
-   
+    s_tb <- rbind(s_tb, as.data.frame(t(coef(summary(glm.fit))[,4])))   
   }
+  
+  s_tb <- s_tb[2:nrow(s_tb),]
+  write.csv(s_tb, file=filesname, row.names = FALSE)
   colnames(cm_tb) <- names 
   if(plot){
     histplot(cm_tb)
@@ -81,7 +104,7 @@ bootstrap_glm <- function(df, T, plot=TRUE, n)
 
 singleglm <- function(df)
 {
-  finaldf<-twoclasssample(df, n=200)
+  finaldf<-twoclasssample(df, n=4000)
   glm.fit <- glm(y ~ ., data = finaldf, family = binomial)
   summary(glm.fit)
   cm <- confusionMatrix(table(as.numeric(glm.fit$fitted.values>0.5), finaldf$y))
@@ -92,58 +115,39 @@ singleglm <- function(df)
 
 ## EPF
 ```{r}
-df<-prosocial_preprocessing(read.csv('cleandata.csv'))
+df<-aggression_preprocessing(read.csv('./cleandata.csv'))
 df <- subset(df, select=-c(X,aggressive_sumscore , prosocial_child, prosocial_parent, interview_date, interview_age, subjectkey))
 ```
 
 ```{r}
-singleglm(df)
+cm_tb<-bootstrap_glm(df, T=GlobalT, filesname = './Aggression-Attributes-EPF.csv')
+write.csv(cm_tb,"./Aggression-Results-EPF.csv", row.names = FALSE)
 ```
-
-```{r}
-cm_tb<-bootstrap_glm(df, T=5000, n=4000)
-write.csv(cm_tb,"./final/aggression-EPF-glm.csv", row.names = FALSE)
-```
-
- 
 
 ## Brain
 Attribute selection
 ```{r}
-df<-prosocial_preprocessing(read.csv('brain_cb.csv'))
-df <- subset(df, select=-c(aggressive_sumscore, prosocial_child, prosocial_parent, subjectkey,prosocial_sum))
+df<-aggression_preprocessing(read.csv('./brain_cb.csv'))
+df <- subset(df, select=-c(aggressive_sumscore, prosocial_child, prosocial_parent, subjectkey))
 ```
 
 ```{r}
-singleglm(df)
-```
-
-```{r}
-cm_tb<-bootstrap_glm(df, T=5000)
-write.csv(cm_tb,"./final/brain-glm.csv", row.names = FALSE)
+cm_tb<-bootstrap_glm(df, T=GlobalT, filesname = './Prosocial-Attributes-brain.csv')
+write.csv(cm_tb,"./Prosocial-Results-brain.csv", row.names = FALSE)
 ```
 
 ## Brain + EPF
 ```{r}
-df <- merge(x = read.csv('cleandata.csv'), y = read.csv('brain_cb.csv'), by = "subjectkey", all.x = TRUE)
-df <- df[complete.cases(df), ]        
-
-df<- df[(df$prosocial_parent.x  <= (3)) | (df$prosocial_parent.x  == 6), ]
-df<- df[(df$prosocial_child.x <= (3)) | (df$prosocial_child.x  == 6), ]
-df$prosocial_sum <- df$prosocial_parent.x+df$prosocial_child.x
-df <- df[df$prosocial_sum != 9, ]
-df <- df[df$prosocial_sum != 8, ]
-df <- df[df$prosocial_sum != 7, ]
-cut <- df[df$prosocial_sum == 6, ]
-cut <- cut[cut$prosocial_child.x != 3, ]
-df <- subset(df, !(subjectkey %in% cut$subjectkey))
-df$y <- ifelse(df$prosocial_sum <= (6), 0, 1)
+df <- merge(x = read.csv('./cleandata.csv'), y = read.csv('./brain_cb.csv'), by = "subjectkey", all.x = TRUE)
+df <- df[complete.cases(df), ]      
+df<- df[(df$aggressive_sumscore.x  <= (-2.020650971)) | (df$aggressive_sumscore.x  >= (0.2168869)), ]
+df$y <- ifelse(df$aggressive_sumscore.x <= (-2.020650971), 0, 1)
 
 df <- subset(df, select=-c(X, prosocial_parent.x, prosocial_child.x, interview_date,subjectkey, aggressive_sumscore.x, interview_age, aggressive_sumscore.y, prosocial_child.y, prosocial_parent.y,prosocial_sum))
 #write.csv(df, './final/prosocialEPFbrain.csv', row.names = FALSE)
 ```
 
 ```{r}
-cm_tb<-bootstrap_glm(df, T=5000)
-write.csv(cm_tb,"./final/brain+EPF-glm.csv", row.names = FALSE)
+cm_tb<-bootstrap_glm(df, T=GlobalT, filesname = './Prosocial-Attributes-brain+EPF.csv')
+write.csv(cm_tb,"./Prosocial-Results-brain+EPF.csv", row.names = FALSE)
 ```
